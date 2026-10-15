@@ -1,0 +1,11 @@
+import {cp,mkdir,readdir,rm} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+const root=new URL('../',import.meta.url),dist=new URL('dist/',root),site=new URL('site/',root);
+await rm(dist,{recursive:true,force:true});await mkdir(dist,{recursive:true});
+const archives=(await readdir(site)).filter(n=>n.endsWith('.tar.gz')).sort();
+if(archives.length!==3)throw Error('The three site archives are required. Check site/ before deployment.');
+for(const name of archives)execFileSync('tar',['-xzf',fileURLToPath(new URL(name,site)),'-C',fileURLToPath(dist)]);
+await cp(new URL('client/assistant.js',root),new URL('assistant.js',dist));
+await cp(new URL('client/404.html',root),new URL('404.html',dist));
+console.log('Built captured pages and editable chatbot client in dist/.');
