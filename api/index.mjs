@@ -1,4 +1,4 @@
-import {chat} from '../lib/chat.mjs';
+import {chat,aiConfiguration} from '../lib/chat.mjs';
 import tenants from '../data/tenants.json' with {type:'json'};
 import media from '../data/media.json' with {type:'json'};
 
@@ -7,7 +7,8 @@ export async function handle(request,env=process.env){
  if(action==='chat'||url.pathname==='/api/chat')return chat(request,env,tenants);
  if(action==='status'||url.pathname==='/api/status'){
   if(request.method!=='GET')return new Response('Use GET',{status:405});
-  return Response.json({service:'chatbot',aiConfigured:Boolean(env.AI_GATEWAY_API_KEY&&env.AI_GATEWAY_MODEL),model:env.AI_GATEWAY_MODEL||null},{headers:{'Cache-Control':'no-store'}});
+  const ai=aiConfiguration(env);
+  return Response.json({service:'chatbot',aiConfigured:Boolean(ai.key&&ai.model),provider:ai.provider,model:ai.model||null},{headers:{'Cache-Control':'no-store'}});
  }
  if(url.searchParams.has('asset')||url.pathname.startsWith('/assets/')){
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
