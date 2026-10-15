@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {"api/index.mjs": {"maxDuration": 30}},
+  "routes": [
+    {"src": "^/$", "dest": "/mirror/index.html"},
+    {"handle": "filesystem"},
+    {"src": "^/api/chat$", "dest": "/api/index?action=chat"},
+    {"src": "^/api/status$", "dest": "/api/index?action=status"},
+    {"src": "^/assets/(.*)$", "dest": "/api/index?asset=$1"},
+    {"src": ".*", "dest": "/404.html", "status": 404}
+  ]
+}
