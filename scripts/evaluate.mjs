@@ -13,6 +13,7 @@ for(const scenario of scenarios){
   const response=endpoint?await fetch(request):await handle(request,{});
   if(!response.ok){failed='HTTP '+response.status;break;}
   const r=await response.json();
+  if(t.language&&r.state?.language!==t.language)failed='wrong response language '+r.state?.language;
   if(t.topic&&r.topic!==t.topic)failed=`topic ${r.topic}, expected ${t.topic}`;
   if(t.tenant&&r.tenant!==t.tenant)failed=`tenant ${r.tenant}, expected ${t.tenant}`;
   if(t.sourcePath&&!r.sources.some(s=>new URL(s.original).pathname===t.sourcePath))failed='missing official source '+t.sourcePath;
