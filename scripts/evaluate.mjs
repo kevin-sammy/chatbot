@@ -15,6 +15,9 @@ for(const scenario of scenarios){
   const r=await response.json();
   if(t.topic&&r.topic!==t.topic)failed=`topic ${r.topic}, expected ${t.topic}`;
   if(t.tenant&&r.tenant!==t.tenant)failed=`tenant ${r.tenant}, expected ${t.tenant}`;
+  if(t.sourcePath&&!r.sources.some(s=>new URL(s.original).pathname===t.sourcePath))failed='missing official source '+t.sourcePath;
+  if(t.floorOf){const listing=tenants.find(s=>s.name===t.floorOf);if(listing?.floor&&!r.answer.includes(listing.floor))failed='current directory floor omitted';}
+  if(t.comingSoonList){const listed=r.sources.map(s=>tenants.find(t=>t.url===s.original)).filter(Boolean);if(!listed.length||listed.some(t=>t.status!=='opening-soon'))failed='invalid coming-soon recommendation';}
   if(t.statusOf){const listing=tenants.find(s=>s.name===t.statusOf);if(listing?.status==='opening-soon'&&!/Opening Soon/i.test(r.answer))failed='coming-soon status omitted';}
   for(const text of t.contains||[])if(!r.answer.toLowerCase().includes(text.toLowerCase()))failed='missing expected evidence: '+text;
   for(const text of t.forbidden||[])if(r.answer.toLowerCase().includes(text.toLowerCase()))failed='unsupported claim: '+text;
