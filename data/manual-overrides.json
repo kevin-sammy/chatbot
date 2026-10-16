@@ -1,0 +1,6 @@
+{
+  "instructions": "Only approved transcriptions from official Galleria pages may be published. Keep approved false until the image and transcription have been checked. Do not enter secrets or visitor information.",
+  "exampleTemplate": {"id":"parking-image-rates","topic":"parking-rates","url":"https://galleria.co.ke/parking/","text":null,"approved":false,"verifiedAt":null,"expiresAt":null},
+  "structuredExampleTemplate": {"id":"verified-event-date","recordId":"events/verified-event-slug","url":null,"fields":{"startDate":null,"endDate":null,"startTime":null,"endTime":null},"approved":false,"verifiedAt":null},
+  "entries": []
+}
