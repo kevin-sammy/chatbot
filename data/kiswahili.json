@@ -1,0 +1,94 @@
+{
+  "parking-rates": {
+    "source": "The published Galleria parking fees are:\n• 0 – 15minutes: Ksh 50\n• 15 – 30 minutes: Free\n• 30 minutes – 2 hours: Ksh 50\n• 2 – 3 hours: Ksh 100\n• Any Additional hour or part of it: Ksh 100\n• 8 pm to 6 am – Fixed Rate: Ksh 100\n• Max Charge for a daily(24 hour) parking: Ksh 1000\n• Lost ticket: Ksh 1000\nThe first two time bands are shown exactly as published and are unusual; confirm them with Park-N-Go.\nParking enquiries: Park-N-Go, 0790 856193. These are published rates, not a live tariff check.",
+    "translation": "Ada za maegesho zilizochapishwa na Galleria ni:\n• Dakika 0 – 15: Ksh 50\n• Dakika 15 – 30: Bila malipo\n• Dakika 30 – saa 2: Ksh 50\n• Saa 2 – 3: Ksh 100\n• Kila saa ya ziada au sehemu yake: Ksh 100\n• 8 pm hadi 6 am – Ada maalum: Ksh 100\n• Kiwango cha juu kwa siku (saa 24): Ksh 1000\n• Tiketi iliyopotea: Ksh 1000\nVipindi viwili vya kwanza vimenukuliwa kama vilivyochapishwa na havifuati mpangilio wa kawaida; vithibitishe na Park-N-Go.\nKwa maswali ya maegesho: Park-N-Go, 0790 856193. Hizi ni ada zilizochapishwa, si ukaguzi wa moja kwa moja wa bei za sasa."
+  },
+  "parking-payment": {
+    "source": "For M-Pesa parking payment: scan the QR code on your parking ticket, review the bill, choose M-Pesa, confirm your phone number and complete the official payment prompt on your phone. The chatbot cannot collect payments or PINs. For help, contact Park-N-Go on 0790 856193.",
+    "translation": "Kulipia maegesho kwa M-Pesa: chunguza msimbo wa QR kwenye tiketi yako, kagua bili, chagua M-Pesa, thibitisha nambari yako ya simu na ukamilishe ombi rasmi la malipo kwenye simu yako. Gumzo hili halipokei malipo wala PIN. Kwa msaada wasiliana na Park-N-Go kupitia 0790 856193."
+  },
+  "parking-hours": {
+    "source": "I do not have verified parking entry and exit hours. The published night tariff covers 8 p.m.–6 a.m.; a tariff period does not confirm the parking gate schedule. Please confirm access hours with Park-N-Go on 0790 856193.",
+    "translation": "Sina saa zilizothibitishwa za kuingia na kutoka kwenye maegesho. Ada ya usiku iliyochapishwa ni ya 8 p.m.–6 a.m.; kipindi cha ada hakithibitishi saa za kufunguliwa kwa lango. Thibitisha na Park-N-Go kupitia 0790 856193."
+  },
+  "parking-location": {
+    "source": "Ample and secure parking is available across Galleria, including outdoor parking and a shaded parking silo that has direct access to the New Wing from both levels.\nFor parking assistance, call Park-N-Go on 0790 856193.",
+    "translation": "Maegesho yanapatikana katika maeneo mbalimbali ya Galleria, yakiwemo ya nje na jengo la maegesho lenye kivuli, ambalo lina njia ya moja kwa moja kwenda New Wing kutoka ngazi zote mbili. Kwa msaada piga Park-N-Go kupitia 0790 856193."
+  },
+  "mall-hours": {
+    "source": "Galleria’s published mall hours: Mon - Sun 8:00 am - 10:00 pm . Individual store hours differ. Tell me the store name if you need its hours; holiday changes should be confirmed with the store.",
+    "translation": "Saa za kazi zilizochapishwa za Galleria: Jumatatu–Jumapili 8:00 am - 10:00 pm. Saa za maduka binafsi zinaweza kutofautiana. Ni duka gani ungependa kujua saa zake?"
+  },
+  "gift-vouchers": {
+    "source": "Gift Vouchers\nGift Vouchers from Galleria Mall are a timeless gift, perfect for any Occassion. Gift Vouchers are available from our Management Office located on the first floor opposite Standard Chartered Bank.\nThe Management office is open Monday – Friday, 8:30 am – 5pm, Saturday 8:30 am – 1pm and closed Sundays and public holidays.\nConfirm voucher denominations and participating stores with management.",
+    "translation": "Vocha za zawadi za Galleria zinapatikana katika Ofisi ya Usimamizi kwenye ghorofa ya kwanza, mkabala na Standard Chartered Bank. Ofisi hufunguliwa Jumatatu–Ijumaa 8:30 am–5 pm na Jumamosi 8:30 am–1 pm; hufungwa Jumapili na sikukuu. Thibitisha thamani za vocha na maduka yanayozikubali na usimamizi."
+  },
+  "kids-activities": {
+    "source": "Galleria’s kids page describes the G-Fun Club play area, including an indoor netted area, a reading nook and art tables, suitable for children including toddlers. It is in the middle of the food zone. Confirm activity prices, age rules and dated events with Galleria before visiting.",
+    "translation": "Ukurasa rasmi wa watoto unaeleza eneo la michezo la G-Fun Club katikati ya food zone, lenye eneo la ndani lililozungushiwa wavu, kona ya kusoma na meza za sanaa. Linaelezwa kuwafaa watoto, wakiwemo wadogo. Thibitisha bei, masharti ya umri na tarehe za matukio na Galleria kabla ya kutembelea."
+  },
+  "leasing": {
+    "source": "For retail leasing, current space availability and a quotation, contact Galleria on 0704 498463 or info@galleria.co.ke. Galleria’s leasing page describes its retail spaces and the Galleria Gardens development.",
+    "translation": "Kwa kukodisha eneo la biashara, upatikanaji wa nafasi na bei, wasiliana na Galleria kupitia 0704 498463 au info@galleria.co.ke. Ukurasa rasmi unaeleza maeneo ya biashara na maendeleo ya Galleria Gardens."
+  },
+  "pets": {
+    "source": "Galleria’s courtesy policy welcomes pets, requires them to be kept on a leash and asks owners to clean up after them.",
+    "translation": "Sera ya Galleria inaruhusu wanyama vipenzi, lakini wanapaswa kufungwa kwa kamba na wenyewe kusafisha uchafu wao."
+  },
+  "smoking": {
+    "source": "No smoking within and around the Mall except in the two designated smoking areas",
+    "translation": "Uvutaji sigara hauruhusiwi ndani na karibu na maduka isipokuwa katika maeneo mawili yaliyotengwa kwa uvutaji sigara."
+  },
+  "photography": {
+    "source": "No photography or videography allowed within and around the premises without express permission from the Management.",
+    "translation": "Kupiga picha au video ndani na karibu na eneo hili kunahitaji ruhusa ya wazi kutoka kwa usimamizi."
+  },
+  "security": {
+    "source": "There will be mandatory security checks for all persons and/or vehicles entering into the mall",
+    "translation": "Watu na magari yote yanayoingia Galleria yanapaswa kukaguliwa na walinzi."
+  },
+  "vehicle-policy": {
+    "source": "All vehicles are parked at the owner’s risk. The Management Shall not take liability for any loss or damage.",
+    "translation": "Magari huegeshwa kwa hatari ya mwenye gari. Usimamizi hauchukui dhima kwa hasara au uharibifu, kulingana na sera iliyochapishwa."
+  },
+  "mall-contact": {
+    "source": "Galleria enquiries: 0704 498463 or 020 2363063. Email: info@galleria.co.ke. Address: junction of Lang’ata and Magadi Roads, Karen, Nairobi.",
+    "translation": "Kwa maswali ya Galleria, piga 0704 498463 au 020 2363063. Barua pepe ni info@galleria.co.ke. Galleria iko kwenye makutano ya Barabara za Lang’ata na Magadi, Karen, Nairobi."
+  },
+  "directions": {
+    "source": "Galleria is at the junction of Lang’ata and Magadi Roads, Karen, Nairobi. From Nairobi town, the website lists route 24 towards Karen (Lang’ata Road entrance), or routes 125/126 towards Rongai/Kiserian (Magadi Road entrance). From Karen, use route 24 towards town; from Rongai/Kiserian, use 125/126 towards town. Ask to alight at Galleria. Check current routes and fares with the operator.",
+    "translation": "Galleria iko kwenye makutano ya Barabara za Lang’ata na Magadi, Karen, Nairobi. Kutoka mjini Nairobi, tovuti inaorodhesha njia 24 kuelekea Karen kupitia Lang’ata Road au 125/126 kuelekea Rongai/Kiserian kupitia Magadi Road. Kutoka Karen tumia 24 kuelekea mjini; kutoka Rongai/Kiserian tumia 125/126 kuelekea mjini, na uombe kushukishwa Galleria. Thibitisha njia na nauli za sasa na mhudumu wa usafiri."
+  },
+  "parking-capacity": {
+    "source": "Galleria’s website lists 889 parking bays. This is published capacity, not a live count of available spaces.",
+    "translation": "Tovuti ya Galleria inaorodhesha nafasi 889 za maegesho. Huu ni uwezo uliochapishwa, si idadi ya nafasi zilizo wazi sasa."
+  },
+  "mall-map": {
+    "source": "Use Galleria’s mall map to view the mall layout. For a particular shop, tell me its name and I can check its published floor. Detailed step-by-step directions inside the mall should be confirmed at the information desk.",
+    "translation": "Tumia ramani rasmi ya Galleria kuona mpangilio wa maduka. Niambie jina la duka ili nikague ghorofa yake iliyochapishwa. Thibitisha maelekezo ya hatua kwa hatua ndani ya maduka katika dawati la taarifa."
+  },
+  "events": {
+    "source": "See Galleria’s official events page for dated event listings and booking details. I do not have a verified live event schedule or ticket availability, so please confirm dates with Galleria on 0704 498463.",
+    "translation": "Angalia ukurasa rasmi wa matukio kwa tarehe na maelezo ya kuhifadhi nafasi. Thibitisha tarehe na upatikanaji wa tiketi na Galleria kupitia 0704 498463."
+  },
+  "deals": {
+    "source": "See Galleria’s official deals page for published offers and their terms. Expired offers are not confirmation of a current discount; check the dates and confirm availability with the store.",
+    "translation": "Angalia ukurasa rasmi wa Deals kwa ofa na masharti yake. Ofa iliyokwisha muda wake haithibitishi punguzo la sasa; kagua tarehe na uthibitishe upatikanaji na duka."
+  },
+  "noticeboard-rates": {
+    "source": "Published notice-board advertising prices, inclusive of VAT: A5: Ksh 150; A4: Ksh 300; A3: Ksh 700; A2: Ksh 1600; A1: Ksh 2500. Confirm duration, availability and the current quote with the marketing team before booking.",
+    "translation": "Bei zilizochapishwa za matangazo kwenye ubao, zikijumuisha VAT: A5: Ksh 150; A4: Ksh 300; A3: Ksh 700; A2: Ksh 1600; A1: Ksh 2500. Thibitisha muda, upatikanaji na bei ya sasa na timu ya masoko kabla ya kuhifadhi."
+  },
+  "flyer-rates": {
+    "source": "The website lists flyer distribution at KSh 8,120 per day, inclusive of VAT. Only two people may distribute flyers; aggressive selling is not allowed, and booking and payment must be confirmed first. Confirm current availability and price with the marketing team.",
+    "translation": "Tovuti inaorodhesha usambazaji wa vipeperushi kwa KSh 8,120 kwa siku, ikijumuisha VAT. Ni watu wawili pekee wanaoruhusiwa kusambaza; kuuza kwa kushinikiza hakuruhusiwi, na nafasi na malipo lazima zithibitishwe kwanza. Thibitisha bei na upatikanaji na timu ya masoko."
+  },
+  "activation-rates": {
+    "source": "Published in-mall activation rates per day, inclusive of VAT:\n• Atrium A (243 Sq Ft): Kshs. 46,400\n• Atrium A: Water Feature (243 Sq Ft): Kshs. 23,200\n• Atrium B (162 Sq Ft): Kshs. 46,400\n• Notice Board (70 Sq Ft) Essenza: Kshs. 23,200\n• Notice Board (70 Sq Ft) Mr Price: Kshs. 23,200\n• Star Optics (50 Sq Ft): Kshs. 15,080\n• Woolworths / Bata (Water Feature) (50 Sq Ft Each): Kshs. 15,080\n• ATRIUM A ENTRANCE (70Sq Ft): Kshs. 23,200\nConfirm the current quote and space availability with marketing@galleria.co.ke or 0704 498463 before booking.",
+    "translation": "Bei zilizochapishwa za shughuli za matangazo kwa siku, zikijumuisha VAT:\n• Atrium A (243 Sq Ft): Kshs. 46,400\n• Atrium A: Water Feature (243 Sq Ft): Kshs. 23,200\n• Atrium B (162 Sq Ft): Kshs. 46,400\n• Notice Board (70 Sq Ft) Essenza: Kshs. 23,200\n• Notice Board (70 Sq Ft) Mr Price: Kshs. 23,200\n• Star Optics (50 Sq Ft): Kshs. 15,080\n• Woolworths / Bata (Water Feature) (50 Sq Ft Each): Kshs. 15,080\n• ATRIUM A ENTRANCE (70Sq Ft): Kshs. 23,200\nThibitisha bei na nafasi kupitia marketing@galleria.co.ke au 0704 498463 kabla ya kuhifadhi."
+  },
+  "advertising": {
+    "source": "For advertising or in-mall activations, contact marketing@galleria.co.ke or eventsandpromotions@galleria.co.ke; phone 0704 498463. Notice-board, flyer and activation prices are published on the advertising page. Availability and the applicable rate need confirmation before booking.",
+    "translation": "Kwa matangazo au shughuli za kutangaza bidhaa ndani ya Galleria, wasiliana kupitia marketing@galleria.co.ke au eventsandpromotions@galleria.co.ke, au piga 0704 498463. Bei za mabango, vipeperushi na shughuli za matangazo zimechapishwa kwenye ukurasa rasmi. Thibitisha nafasi na bei kabla ya kuhifadhi."
+  }
+}
