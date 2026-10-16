@@ -25,3 +25,7 @@ test('Kiswahili hours remain Kiswahili through the API without relying on a mode
 test('unlisted Zara is a qualified absence and election predictions are out of scope',()=>{
  const r=dialogueTurn('Is Zara here?',tenants);assert.match(r.result.answer,/don’t see Zara/i);assert.equal(dialogueTurn('Who will win the election?',tenants).result.topic,'off-topic');
 });
+
+test('plural Kiswahili mall-hours question clears a previous café focus',()=>{
+ let t=dialogueTurn('Where is Artcaffe?',tenants);t=dialogueTurn('Mnafungua saa ngapi?',tenants,t.state);assert.equal(t.result.topic,'mall-hours');assert.match(t.result.answer,/Saa za kazi/);assert.match(t.result.answer,/8:00 am/);assert.equal(t.state.tenant,'');
+});
