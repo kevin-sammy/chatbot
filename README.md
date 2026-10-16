@@ -74,7 +74,7 @@ Every generation receives the Nairobi date/time. Expired and cancelled records a
 - `npm test`: routing, conversation, provider boundaries, privacy and date regressions.
 - `python3 -m unittest discover -s tests -p '*_test.py'`: ingestion fixtures.
 - `npm run check:knowledge`: source/schema and completeness checks.
-- `npm run evaluate`: 47 realistic scenarios, including multi-turn and Kiswahili cases, without AI credits.
+- `npm run evaluate`: 68 realistic scenarios, including multi-turn and Kiswahili cases, without AI credits.
 - `CHATBOT_EVAL_URL=https://your-preview/api/chat npm run evaluate`: opt-in live evaluation; calls the configured provider and is subject to quotas/rate limits. Use a staging target rather than bulk-testing production.
 - `npm run build`: captured site build with the updated widget; no automatic event/deal announcements.
 
@@ -83,3 +83,5 @@ Every generation receives the Nairobi date/time. Expired and cancelled records a
 Application logs contain allowlisted quality metrics, not questions, answers, history, names or contacts. Production metrics are enabled unless `CHAT_METRICS=0`; local runs can enable them with `CHAT_METRICS=1`. Hosting/AI providers may process request data according to their own terms; the widget notice is not a claim of legal compliance. Review data handling and provider retention with management before official launch. Weekly review can use saved CI evaluation results; live log retention follows the hosting plan.
 
 The supplementary in-process guard permits 30 requests per minute per platform-supplied IP, with short-lived salted hashes. It **does not share counters across instances**. For platform-wide enforcement, configure a narrowly scoped Vercel WAF rate limit on POST `/api/chat` and POST `/api/index?action=chat`, keyed by IP, reviewing existing rules and included usage first. Start in log mode and review traffic before enforcing. The adapter also supports an existing Upstash Redis REST service through `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`; it uses atomic increment/expiry, never stores raw IPs, and fails safely if the configured shared counter is unavailable. These settings are optional; no paid service is provisioned automatically.
+
+The visitor checklist adds 20 exact customer questions and a coffee/cake follow-up flow. Assertions check canonical links, current directory floors and coming-soon status dynamically so scheduled refreshes can update real facts. Event years and adjacent-store claims still require official evidence.
