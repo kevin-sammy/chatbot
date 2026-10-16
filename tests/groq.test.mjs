@@ -7,7 +7,7 @@ test('Groq uses its own key, direct endpoint and vetted sources even when Gatewa
  globalThis.fetch=async(url,init)=>{
   assert.equal(url,'https://api.groq.com/openai/v1/chat/completions');
   assert.equal(init.headers.Authorization,'Bearer mock-groq-key');
-  const payload=JSON.parse(init.body);assert.equal(payload.model,'llama-3.3-70b-versatile');assert.deepEqual(payload.response_format,{type:'json_object'});
+  const payload=JSON.parse(init.body);assert.equal(payload.model,'openai/gpt-oss-20b');assert.deepEqual(payload.response_format,{type:'json_object'});
   assert.match(payload.messages[0].content,/SIM registration/);assert(payload.messages[0].content.length<26000);
   return Response.json({choices:[{message:{content:JSON.stringify({answer:'Safaricom can help with mobile lines and data. Which service do you need?',source_ids:['T:safaricom'],tenant:'Safaricom',topic:'tenant'})}}]});
  };
@@ -22,5 +22,5 @@ test('Groq rate limits fall back without switching to a paid provider or leaking
  try{const d=await(await handle(request(),{AI_PROVIDER:'groq',GROQ_API_KEY:'mock-groq-key',AI_GATEWAY_API_KEY:'unused',AI_GATEWAY_MODEL:'unused'})).json();assert.equal(calls,1);assert.equal(d.mode,'directory');assert.equal(d.aiStatus,'unavailable');assert.match(d.answer,/voice and data/);assert.doesNotMatch(JSON.stringify(d),/mock-groq-key|private-error-value/);}finally{globalThis.fetch=original;}
 });
 test('Groq status reports default model and presence without returning credentials',async()=>{
- const d=await(await handle(new Request('https://chatbot.example/api/status'),{GROQ_API_KEY:'private-key'})).json();assert.equal(d.aiConfigured,true);assert.equal(d.provider,'groq');assert.equal(d.model,'llama-3.3-70b-versatile');assert.doesNotMatch(JSON.stringify(d),/private-key/);
+ const d=await(await handle(new Request('https://chatbot.example/api/status'),{GROQ_API_KEY:'private-key'})).json();assert.equal(d.aiConfigured,true);assert.equal(d.provider,'groq');assert.equal(d.model,'openai/gpt-oss-20b');assert.doesNotMatch(JSON.stringify(d),/private-key/);
 });
