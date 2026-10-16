@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {directoryAnswer,findTenants} from '../lib/directory.mjs';
 import {chat} from '../lib/chat.mjs';
-const tenants=JSON.parse(fs.readFileSync(new URL('../data/tenants.json',import.meta.url)));
+const tenants=JSON.parse(fs.readFileSync(new URL('./fixtures/tenants-baseline.json',import.meta.url)));
 test('reported parking question returns fees, never The Nut Bar',()=>{
  const r=directoryAnswer('How are the parking rates',tenants);
  assert.match(r.answer,/parking fee/i);assert.match(r.answer,/30 minutes\s*[–-]\s*2 hours: Ksh 50/i);assert.match(r.answer,/0790 856193/);assert.doesNotMatch(r.answer,/Nut Bar/);assert.equal(r.sources[0].original,'https://galleria.co.ke/parking/');

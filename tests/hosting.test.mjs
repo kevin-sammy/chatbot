@@ -4,7 +4,7 @@ import {handle} from '../api/index.mjs';
 import media from '../data/media.json' with {type:'json'};
 const req=path=>new Request('https://chatbot.example'+path);
 test('Vercel rewrite reaches chat API with a web Request',async()=>{
- const r=await handle(new Request('https://chatbot.example/api/index?action=chat',{method:'POST',headers:{origin:'https://chatbot.example'},body:JSON.stringify({message:'Is there Safaricom?'})}),{});const d=await r.json();assert.equal(r.status,200);assert.equal(d.tenant,'Safaricom');assert.equal(d.aiStatus,'not-configured');
+ const r=await handle(new Request('https://chatbot.example/api/index?action=chat',{method:'POST',headers:{origin:'https://chatbot.example'},body:JSON.stringify({message:'Is there Safaricom?'})}),{});const d=await r.json();assert.equal(r.status,200);assert.equal(d.tenant,'Safaricom');assert.equal(d.aiStatus,'not-needed');
 });
 test('status reports presence only and never exposes key',async()=>{
  const r=await handle(req('/api/index?action=status'),{AI_GATEWAY_API_KEY:'never-print-this-value',AI_GATEWAY_MODEL:'test/model'});const d=await r.json();assert.equal(d.aiConfigured,true);assert.equal(d.service,'chatbot');assert.doesNotMatch(JSON.stringify(d),/never-print-this-value/);assert.equal(r.headers.get('cache-control'),'no-store');

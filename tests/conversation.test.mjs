@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import tenants from '../data/tenants.json' with {type:'json'};
+import tenants from './fixtures/tenants-baseline.json' with {type:'json'};
 import {directoryAnswer} from '../lib/directory.mjs';
 import {chat} from '../lib/chat.mjs';
 import {cleanHistory,conversationContext,parseConversation} from '../lib/conversation.mjs';
@@ -13,7 +13,7 @@ test('ice cream remains a dining query',()=>assert.equal(directoryAnswer('Where 
 test('pool tables are distinct from a swimming pool',()=>assert.equal(directoryAnswer('Are there pool tables?',tenants).topic,'activity-billiards'));
 test('Safaricom presence is a short answer, not a profile dump',()=>{const r=directoryAnswer('Is there a Safaricom store?',tenants);assert.match(r.answer,/Yes.*Ground Floor/);assert.doesNotMatch(r.answer,/3G|Wimax|Mon - Fri|countrywide/);});
 for(const q of ['what services can i get at safaricom','What can I do at Safaricom?','What services can I get there?'])test(q,()=>{
- const r=directoryAnswer(q,tenants,'Safaricom','tenant');assert.equal(r.tenant,'Safaricom');assert.match(r.answer,/voice and data/);assert.match(r.answer,/SIM registration/);assert.match(r.answer,/does not confirm every service for this branch/);assert.doesNotMatch(r.answer,/3G|Wimax|published hours|G-Fun/);
+ const r=directoryAnswer(q,tenants,'Safaricom','tenant');assert.equal(r.tenant,'Safaricom');assert.match(r.answer,/voice and data/);assert.match(r.answer,/SIM registration/);assert.match(r.answer,/does not confirm individual tasks/);assert.doesNotMatch(r.answer,/3G|Wimax|published hours|G-Fun/);
 });
 test('hours question does not match a services question',()=>{const r=directoryAnswer('What time does Safaricom close on Sunday?',tenants);assert.match(r.answer,/Sunday: 10:00 am - 5:00 pm/);assert.doesNotMatch(r.answer,/SIM registration/);});
 for(const q of ['Is there a McDonalds?','Where is McDonald’s?'])test(q,()=>{
