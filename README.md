@@ -74,7 +74,7 @@ Every generation receives the Nairobi date/time. Expired and cancelled records a
 - `npm test`: routing, conversation, provider boundaries, privacy and date regressions.
 - `python3 -m unittest discover -s tests -p '*_test.py'`: ingestion fixtures.
 - `npm run check:knowledge`: source/schema and completeness checks.
-- `npm run evaluate`: 68 realistic scenarios, including multi-turn and Kiswahili cases, without AI credits.
+- `npm run evaluate`: 87 realistic scenarios, including multi-turn and Kiswahili cases, without AI credits.
 - `CHATBOT_EVAL_URL=https://your-preview/api/chat npm run evaluate`: opt-in live evaluation; calls the configured provider and is subject to quotas/rate limits. Use a staging target rather than bulk-testing production.
 - `npm run build`: captured site build with the updated widget; no automatic event/deal announcements.
 
@@ -85,3 +85,9 @@ Application logs contain allowlisted quality metrics, not questions, answers, hi
 The supplementary in-process guard permits 30 requests per minute per platform-supplied IP, with short-lived salted hashes. It **does not share counters across instances**. For platform-wide enforcement, configure a narrowly scoped Vercel WAF rate limit on POST `/api/chat` and POST `/api/index?action=chat`, keyed by IP, reviewing existing rules and included usage first. Start in log mode and review traffic before enforcing. The adapter also supports an existing Upstash Redis REST service through `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`; it uses atomic increment/expiry, never stores raw IPs, and fails safely if the configured shared counter is unavailable. These settings are optional; no paid service is provisioned automatically.
 
 The visitor checklist adds 20 exact customer questions and a coffee/cake follow-up flow. Assertions check canonical links, current directory floors and coming-soon status dynamically so scheduled refreshes can update real facts. Event years and adjacent-store claims still require official evidence.
+
+### English and Kiswahili
+
+The widget has an English/Kiswahili selector, and recognizes common Kiswahili questions automatically. The selected language stays in page memory through neutral replies, store names, “ndiyo”, “hapana” and “la pili”; visitors can explicitly switch with “In English please” or “Jibu kwa Kiswahili”. Main directory, visitor FAQ, event and deal answers have deterministic Kiswahili responses for provider outages. Store names, contact details, dates and amounts are preserved. Familiar Sheng greetings receive clear Kiswahili rather than invented slang.
+
+`data/kiswahili.json` pairs each curated visitor translation with its exact English source. If the source changes, that translation is no longer reused; review and update the pair rather than keeping outdated facts. Live store and event translations use refreshed structured records. The language support covers common mall enquiries, not every possible dialect or phrasing.
