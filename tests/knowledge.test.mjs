@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {directoryAnswer,findTenants} from '../lib/directory.mjs';
 import {chat} from '../lib/chat.mjs';
-const tenants=JSON.parse(fs.readFileSync(new URL('../data/tenants.json',import.meta.url)));
+const tenants=JSON.parse(fs.readFileSync(new URL('./fixtures/tenants-baseline.json',import.meta.url)));
 const cases=[
  ['How are the parking rates','parking-rates',/30 minutes\s*[–-]\s*2 hours: Ksh 50/i],
  ['How do I pay for parking with M-Pesa?','parking-payment',/QR code/],

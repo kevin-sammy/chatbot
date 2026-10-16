@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {directoryAnswer} from '../lib/directory.mjs';
 import {chat} from '../lib/chat.mjs';
-const tenants=JSON.parse(fs.readFileSync(new URL('../data/tenants.json',import.meta.url)));
+const tenants=JSON.parse(fs.readFileSync(new URL('./fixtures/tenants-baseline.json',import.meta.url)));
 for(const q of ['where can i do shopping','Where can I shop?','What shops are there?','Show me shopping options','What stores can I visit?','Where can I buy things?']){
  test(q,()=>{const r=directoryAnswer(q,tenants);assert.equal(r.topic,'shopping');assert.match(r.answer,/Carrefour/);assert.match(r.answer,/Hotpoint/);assert.match(r.answer,/What would you like to buy/);assert(r.context.length>=4);for(const t of r.context){assert.notEqual(t.status,'opening-soon');assert(t.floor);assert(tenants.some(known=>known.url===t.url));}assert.doesNotMatch(r.answer,/could not verify/);});
 }

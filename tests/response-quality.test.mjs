@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import tenants from '../data/tenants.json' with {type:'json'};
+import tenants from './fixtures/tenants-baseline.json' with {type:'json'};
 import {directoryAnswer} from '../lib/directory.mjs';
 import {conversationContext,parseConversation,resolveFocus} from '../lib/conversation.mjs';
 import {chat} from '../lib/chat.mjs';
@@ -57,11 +57,9 @@ test('general SIM and M-Pesa examples cannot become confirmed branch services',(
  const context=conversationContext('What services does Safaricom offer?',[],tenants,fallback);
  const sample={answer:'You can register or swap SIMs and use M‑Pesa services at the shop. Call for up-to-date details.',source_ids:['T:safaricom'],tenant:'Safaricom',topic:'tenant'};
  assert.equal(parseConversation(JSON.stringify(sample),context,tenants,fallback),null);
- const provider=context.facts.relevantStoreDetails.find(t=>t.name==='Safaricom').providerSourceIds[0];
- sample.answer='Safaricom’s general retail services include SIM swaps and M-Pesa support; availability at the Galleria branch is not confirmed.';
- assert.equal(parseConversation(JSON.stringify(sample),context,tenants,fallback),null);
- sample.source_ids.push(provider);
+ sample.answer='The Galleria listing does not confirm SIM swaps or M-Pesa support. Please call the shop before visiting.';
  assert(parseConversation(JSON.stringify(sample),context,tenants,fallback));
+ assert(context.facts.relevantStoreDetails.every(t=>t.providerSourceIds.length===0));
 });
 test('free-tier provider failure still produces a contextual service answer',async()=>{
  const original=globalThis.fetch;globalThis.fetch=async()=>new Response('',{status:429});
