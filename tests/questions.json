@@ -1240,5 +1240,77 @@
         ]
       }
     ]
+  },
+  {
+    "id": "reported-kuna-food-cheapest",
+    "expectedNotes": "Keep Kiswahili after a mixed-language food question; answer price comparison explicitly and do not invent a ranking. Selecting a restaurant offers its verified contact, not a biography.",
+    "turns": [
+      {
+        "message": "hi",
+        "topic": "help"
+      },
+      {
+        "message": "kuna food?",
+        "language": "sw",
+        "topic": "dining-preference",
+        "contains": [
+          "Ungependa"
+        ]
+      },
+      {
+        "message": "cheapest restaurant",
+        "language": "sw",
+        "topic": "dining-price-comparison",
+        "contains": [
+          "Sina bei",
+          "nafuu zaidi"
+        ],
+        "forbidden": [
+          "•"
+        ]
+      },
+      {
+        "message": "Artcaffe",
+        "language": "sw",
+        "tenant": "Artcaffe",
+        "contains": [
+          "menyu",
+          "bei"
+        ]
+      },
+      {
+        "message": "Where is it?",
+        "language": "sw",
+        "tenant": "Artcaffe",
+        "contains": [
+          "iko kwenye"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unverified-cheapest-english",
+    "expectedNotes": "No current menu-price dataset means no definitive cheapest-store claim.",
+    "turns": [
+      {
+        "message": "Which restaurant is cheapest?",
+        "topic": "dining-price-comparison",
+        "contains": [
+          "verified current menu prices",
+          "can’t reliably name"
+        ],
+        "forbidden": [
+          "•"
+        ]
+      },
+      {
+        "message": "KFC",
+        "tenant": "KFC",
+        "contains": [
+          "menu",
+          "prices"
+        ]
+      }
+    ]
   }
 ]
