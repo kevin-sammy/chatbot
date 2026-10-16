@@ -22,7 +22,7 @@ Open http://localhost:3000. Fill in your key in the ignored `.env.local` file to
 2. Set the framework to **Other**, root directory to the repository root, build command to `npm run build`, and output directory to `dist`. `vercel.json` contains these settings.
 3. Add server environment variables:
    - `GROQ_API_KEY`: your Groq key, stored as a **Secret** for Production.
-   - `GROQ_MODEL`: `llama-3.3-70b-versatile`
+   - `GROQ_MODEL`: `openai/gpt-oss-20b`
    - `AI_PROVIDER`: `groq`.
 4. Deploy. If you add or change variables afterward, redeploy so the new values apply.
 5. Open `/api/status` to check whether both AI settings are present. Then ask a question and verify `/api/chat` returns `mode: "ai"` and `aiStatus: "active"`. Presence of settings alone does not prove a successful AI request.
@@ -51,4 +51,4 @@ For an intentional knowledge refresh, install `requirements-knowledge.txt`, then
 
 ### Groq setup
 
-Create a key at https://console.groq.com/keys on the Free plan. Save `GROQ_API_KEY` as a Production Secret in the chatbot Vercel project, with `AI_PROVIDER=groq` and optional `GROQ_MODEL=llama-3.3-70b-versatile`, then redeploy. Do not put the key in client code, GitHub or chat. The free plan has organization-level token and request limits; if limited, the assistant uses its checked directory without attempting a paid provider. `/api/status` reports presence only; confirm a real `/api/chat` response has `provider: "groq"`, `mode: "ai"`, and `aiStatus: "active"`.
+Create a key at https://console.groq.com/keys on the Free plan. Save `GROQ_API_KEY` as a Production Secret in the chatbot Vercel project, with `AI_PROVIDER=groq` and optional `GROQ_MODEL=openai/gpt-oss-20b`, then redeploy. Do not put the key in client code, GitHub or chat. The free plan has organization-level token and request limits; if limited, the assistant uses its checked directory without attempting a paid provider. `/api/status` reports presence only; confirm a real `/api/chat` response has `provider: "groq"`, `mode: "ai"`, and `aiStatus: "active"`.
