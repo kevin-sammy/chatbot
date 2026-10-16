@@ -4,10 +4,15 @@
   "private": true,
   "description": "An AI visitor assistant with verified directory information and conversational follow-ups",
   "type": "module",
-  "engines": {"node": "22.x"},
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "node --env-file-if-exists=.env.local serve.mjs",
     "test": "node --test tests/*.test.mjs",
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "ingest": "python3 scripts/ingest.py",
+    "evaluate": "node scripts/evaluate.mjs",
+    "check:knowledge": "node scripts/check-knowledge.mjs"
   }
 }
