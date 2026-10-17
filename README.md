@@ -1,6 +1,6 @@
 # Chatbot
 
-A conversational AI visitor assistant for a website, with source-backed store recommendations, opening hours, parking information and follow-up questions. Built with JavaScript, Node.js and direct Groq API support, with optional Vercel AI Gateway compatibility. The repository and hosting project are named **chatbot**.
+A conversational AI visitor assistant for a website, with source-backed store recommendations, opening hours, parking information and follow-up questions. Built with JavaScript, Node.js and direct Groq API support. The repository and hosting project are named **chatbot**.
 
 The included case study uses a captured public Galleria mall website. It is an independent prototype, not the mall’s official website. Original names, logos, photos and page content belong to their respective owners. The school management system is a separate project.
 
