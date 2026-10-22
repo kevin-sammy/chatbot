@@ -15,7 +15,7 @@ test('repeated cheaper follow-up remains a price comparison',()=>{
  assert.notEqual(turn('parking under 500',t.state).result.topic,'dining-budget');
 });
 test('menu pronoun uses selected restaurant; explicit topics and coming-soon status win',()=>{
- let t=turn('where is Artcaffe');t=turn('what about their menu',t.state);assert.equal(t.result.tenant,'Artcaffe');assert.match(t.result.answer,/menu prices/);assert(t.result.answer.includes(tenants.find(t=>t.name==='Artcaffe').phone));
+ let t=turn('where is Artcaffe');t=turn('what about their menu',t.state);assert.equal(t.result.tenant,'Artcaffe');assert.match(t.result.answer,/listing.*mentions.*bread/);assert(t.result.answer.includes(tenants.find(t=>t.name==='Artcaffe').phone));
  t=turn('menyu',t.state);assert.equal(t.state.language,'sw');assert.match(t.result.answer,/menyu/);
  const soon=tenants.find(t=>t.status==='opening-soon'&&/dining|restaurant|coffee/i.test(t.categories));if(soon)assert.match(turn(soon.name+' menu').result.answer,/Opening Soon/);
  assert.notEqual(turn('Safaricom menu',t.state).result.tenant,'Artcaffe');
