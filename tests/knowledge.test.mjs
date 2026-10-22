@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import currentTenants from '../data/tenants.json' with {type:'json'};
 import {directoryAnswer,findTenants} from '../lib/directory.mjs';
 import {chat} from '../lib/chat.mjs';
 const tenants=JSON.parse(fs.readFileSync(new URL('./fixtures/tenants-baseline.json',import.meta.url)));
@@ -31,7 +32,7 @@ const cases=[
  ['How much is coffee at Artcaffe?','tenant',/don’t have confirmed prices/],
  ['What is the email for Artcaffe?','tenant',/customercare@artcaffe.co.ke/],
  ['Where is Text Book Center?','tenant',/on Ground Floor/],
- ['How many stores does Galleria have?','store-count',/106.*24/],
+ ['How many stores does Galleria have?','store-count',new RegExp(currentTenants.length+'.*'+currentTenants.filter(t=>t.status==='opening-soon').length)],
  ['What is the A4 poster advertising price?','noticeboard-rates',/A4: Ksh 300/],
  ['How much does Atrium A activation cost?','activation-rates',/Atrium A.*46,400/],
  ['Who do I contact for advertising?','advertising',/marketing@galleria.co.ke/],

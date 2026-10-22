@@ -1,0 +1,182 @@
+{
+  "policy": "Question routing only. Facts, listing status, location and categories come from the refreshed official tenant directory; this file is not an inventory or branch-service guarantee.",
+  "sections": [
+    {
+      "id": "supermarket",
+      "questionEn": "Which major supermarket operates at Galleria Mall and what does it sell?",
+      "questionSw": "Ni supermarket gani iko Galleria na inauza nini?",
+      "labelEn": "supermarket and groceries",
+      "labelSw": "supermarket na bidhaa za vyakula",
+      "storeHints": [
+        "Carrefour"
+      ]
+    },
+    {
+      "id": "variety",
+      "questionEn": "What department and general variety stores are located at Galleria Mall?",
+      "questionSw": "Kuna maduka gani ya bidhaa mbalimbali Galleria?",
+      "labelEn": "general retail and home essentials",
+      "labelSw": "bidhaa mbalimbali na vifaa vya nyumbani",
+      "storeHints": [
+        "Panda Mart",
+        "Miniso",
+        "Woolworths"
+      ]
+    },
+    {
+      "id": "restaurants",
+      "questionEn": "What full-service restaurants and cafes can I find at Galleria Mall?",
+      "questionSw": "Kuna mikahawa gani ya kula na kunywa kahawa Galleria?",
+      "labelEn": "restaurants and cafés",
+      "labelSw": "mikahawa na kahawa",
+      "storeHints": [
+        "Artcaffe",
+        "CJs",
+        "Java House",
+        "Barista & Co.",
+        "Indian Khazanah",
+        "Palace Istanbul",
+        "Mbuzi Munch"
+      ]
+    },
+    {
+      "id": "quick-bites",
+      "questionEn": "What fast food, dessert, and quick-bite options exist at Galleria Mall?",
+      "questionSw": "Kuna chakula cha haraka au aiskrimu wapi Galleria?",
+      "labelEn": "quick meals, drinks and desserts",
+      "labelSw": "chakula cha haraka, vinywaji na vitindamlo",
+      "storeHints": [
+        "KFC",
+        "Pizza Hut",
+        "RocoMamas",
+        "Coldstone Creamery",
+        "Planet Yogurt",
+        "Boba Cafeteria"
+      ]
+    },
+    {
+      "id": "fashion",
+      "questionEn": "Which fashion apparel and clothing brands are at Galleria Mall?",
+      "questionSw": "Kuna maduka gani ya mavazi Galleria?",
+      "labelEn": "fashion and clothing",
+      "labelSw": "mavazi",
+      "storeHints": [
+        "LC Waikiki",
+        "Levi’s",
+        "Vivo Woman",
+        "HLA",
+        "Manix Clothing Store",
+        "MRP",
+        "ONEWAY Kenya",
+        "Lady Luck Shape wear",
+        "Pink Skink"
+      ]
+    },
+    {
+      "id": "footwear",
+      "questionEn": "Where can I buy footwear and sports shoes at Galleria Mall?",
+      "questionSw": "Naweza kununua viatu vya kawaida na vya michezo wapi Galleria?",
+      "labelEn": "footwear and sportswear",
+      "labelSw": "viatu na mavazi ya michezo",
+      "storeHints": [
+        "Bata",
+        "Adidas",
+        "Skechers",
+        "City Walk Galleria",
+        "Umoja Shoe Company",
+        "ANTA"
+      ]
+    },
+    {
+      "id": "beauty",
+      "questionEn": "What beauty, cosmetics, and hair care stores operate at Galleria Mall?",
+      "questionSw": "Kuna maduka gani ya urembo vipodozi na huduma za nywele Galleria?",
+      "labelEn": "beauty and hair care",
+      "labelSw": "urembo, vipodozi na nywele",
+      "storeHints": [
+        "Lintons Beauty World",
+        "True Cosmetics",
+        "JANI Beauty",
+        "Essenza",
+        "Silken human Hair",
+        "Extreme Styling Studio"
+      ]
+    },
+    {
+      "id": "wellness",
+      "questionEn": "What pharmacies, wellness shops, and opticians are located at Galleria Mall?",
+      "questionSw": "Kuna maduka gani ya dawa afya na miwani Galleria?",
+      "labelEn": "pharmacies, wellness and eyecare",
+      "labelSw": "dawa, afya na huduma za macho",
+      "storeHints": [
+        "Healthy U",
+        "Garnet Pharmacy",
+        "Pharmart",
+        "Cilantro Sprouts",
+        "Optica Galleria",
+        "Health Clove"
+      ]
+    },
+    {
+      "id": "electronics",
+      "questionEn": "Which stores sell electronics, appliances, and mobile devices at Galleria Mall?",
+      "questionSw": "Kuna maduka gani ya elektroniki vifaa vya nyumbani na simu Galleria?",
+      "labelEn": "electronics and appliances",
+      "labelSw": "vifaa vya elektroniki na vifaa vya nyumbani",
+      "storeHints": [
+        "Hotpoint",
+        "i.store",
+        "Universal Smart Planet Systems",
+        "Salute I World",
+        "Samsung",
+        "Panda Mart"
+      ]
+    },
+    {
+      "id": "home",
+      "questionEn": "Where can I buy home decor, carpets, and furniture at Galleria Mall?",
+      "questionSw": "Naweza kununua mapambo ya nyumba mazulia na samani wapi Galleria?",
+      "labelEn": "home furnishings and interiors",
+      "labelSw": "samani, mazulia na mapambo ya nyumba",
+      "storeHints": [
+        "Victoria Carpets",
+        "KashCo Interiors",
+        "Ashut",
+        "Panda Mart",
+        "Home & Beyond"
+      ]
+    },
+    {
+      "id": "services",
+      "questionEn": "What banks, forex, and postal services are available at Galleria Mall?",
+      "questionSw": "Kuna benki huduma za kubadilisha fedha na kutuma vifurushi Galleria?",
+      "labelEn": "banking, forex and courier services",
+      "labelSw": "benki, kubadilisha fedha na kutuma vifurushi",
+      "storeHints": [
+        "KCB Bank",
+        "NCBA",
+        "NCBA Loop",
+        "Bank Of Africa (BOA)",
+        "Muthaiga-ABC Forex Bureau",
+        "Fargo Courier"
+      ]
+    },
+    {
+      "id": "specialty",
+      "questionEn": "What sports, entertainment, and specialty outlets operate at Galleria Mall?",
+      "questionSw": "Kuna maduka gani ya michezo burudani na bidhaa maalum Galleria?",
+      "labelEn": "sports, entertainment and specialty outlets",
+      "labelSw": "michezo, burudani na bidhaa maalum",
+      "storeHints": [
+        "Cinemax",
+        "Bikes & Sports",
+        "Going Outdoor",
+        "Fun Factory",
+        "G-Fun Club",
+        "The Hive",
+        "G-Crafts market",
+        "Timekeepers"
+      ]
+    }
+  ]
+}

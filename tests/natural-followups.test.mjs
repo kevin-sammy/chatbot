@@ -27,3 +27,12 @@ test('out of range choice keeps the offered store and pending action',()=>{
 test('undecided diner can request choices without restarting conversation',()=>{
  for(const q of ['anything','show me options','chochote']){const t=turn(q,turn('food').state);assert.equal(t.result.topic,'category');assert(t.result.context.length);}
 });
+
+test('English and Swahili expensive follow-ups stay with dining',()=>{
+ for(const [first,followup,language] of [['food','too expensive','en'],['kuna food','ghali sana','sw'],['kuna food','ghali','sw'],['food','nafuu zaidi','sw']]){
+  const t=turn(followup,turn(first).state);
+  assert.equal(t.result.topic,'dining-price-comparison');assert.equal(t.state.language,language);
+  assert.match(t.result.answer,language==='sw'?/bei za sasa/:/verified current menu prices/);
+  assert.notEqual(turn('parking',t.state).result.topic,'dining-price-comparison');
+ }
+});
