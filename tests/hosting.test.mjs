@@ -13,3 +13,12 @@ test('status is not an AI success claim and handles missing configuration',async
 test('media redirect preserves the original mapped image URL',async()=>{const [asset,target]=Object.entries(media).find(([,url])=>url.startsWith('https://galleria.co.ke/'));const r=await handle(req('/api/index?asset='+encodeURIComponent(asset.slice('/assets/'.length))),{});assert.equal(r.status,307);assert.equal(r.headers.get('location'),target);});
 test('unmapped media cannot be used as an open redirect',async()=>{const r=await handle(req('/api/index?asset=https://evil.example/'),{});assert.equal(r.status,404);assert.equal(r.headers.get('location'),null);});
 test('POST cannot be used to fetch media',async()=>{const r=await handle(new Request('https://chatbot.example/assets/missing.jpg',{method:'POST'}),{});assert.equal(r.status,405);});
+
+test('public status distinguishes freshness from complete real-time sync',async()=>{
+ const response=await handle(req('/api/status'),{}),data=await response.json();
+ assert.equal(data.knowledgeSync.realtimeSync,false);
+ assert(['outdated','partial','checked'].includes(data.knowledgeSync.status));
+ assert.equal(typeof data.knowledgeSync.failedPages,'number');
+ assert.equal(data.knowledgeSync.checkedAt,data.knowledgeUpdatedAt);
+ assert.equal(data.knowledgeSync.timezone,'Africa/Nairobi');
+});

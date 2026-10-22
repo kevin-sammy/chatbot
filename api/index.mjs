@@ -1,3 +1,4 @@
+import {knowledgeHealth} from '../lib/knowledge-health.mjs';
 import {chat,aiConfiguration} from '../lib/chat.mjs';
 import tenants from '../data/tenants.json' with {type:'json'};
 import media from '../data/media.json' with {type:'json'};
@@ -9,7 +10,7 @@ export async function handle(request,env=process.env){
  if(action==='status'||url.pathname==='/api/status'){
   if(request.method!=='GET')return new Response('Use GET',{status:405});
   const ai=aiConfiguration(env);
-  return Response.json({service:'chatbot',aiConfigured:Boolean(ai.key&&ai.model),provider:ai.provider,model:ai.model||null,knowledgeUpdatedAt:catalog.lastSuccessfulCrawl,conversationState:true,sourcePolicy:'official-mall-only',rateLimit:env.UPSTASH_REDIS_REST_URL&&env.UPSTASH_REDIS_REST_TOKEN?'shared-redis':'instance-guard; use platform WAF for shared enforcement'},{headers:{'Cache-Control':'no-store'}});
+  return Response.json({service:'chatbot',aiConfigured:Boolean(ai.key&&ai.model),provider:ai.provider,model:ai.model||null,knowledgeUpdatedAt:catalog.lastSuccessfulCrawl,knowledgeSync:knowledgeHealth(catalog,tenants),conversationState:true,sourcePolicy:'official-mall-only',rateLimit:env.UPSTASH_REDIS_REST_URL&&env.UPSTASH_REDIS_REST_TOKEN?'shared-redis':'instance-guard; use platform WAF for shared enforcement'},{headers:{'Cache-Control':'no-store'}});
  }
  if(url.searchParams.has('asset')||url.pathname.startsWith('/assets/')){
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});

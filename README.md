@@ -93,3 +93,15 @@ The widget has an English/Kiswahili selector, and recognizes common Kiswahili qu
 `data/kiswahili.json` pairs each curated visitor translation with its exact English source. If the source changes, that translation is no longer reused; review and update the pair rather than keeping outdated facts. Live store and event translations use refreshed structured records. The language support covers common mall enquiries, not every possible dialect or phrasing.
 
 Dining price comparisons explicitly state that current menu prices are unverified. The assistant does not rank restaurants as cheapest without comparable evidence; selecting a restaurant next offers its published contact for menu prices. Use the production domain for current code, since immutable Vercel deployment URLs retain their original version.
+
+### Checking knowledge freshness
+
+`GET /api/status` now includes `knowledgeSync`. `status` is `outdated` when the snapshot is missing, invalid, in the future or older than 36 hours; otherwise it is `partial` when failed requests, retained pages/stores or incomplete discovery remain, and `checked` when none of those are recorded. `lastRefreshStatus` preserves the partial/checked distinction even when the snapshot becomes outdated. Counts describe the stored snapshot, not a live comparison of the entire website. `realtimeSync` is always false. Older catalog files report unknown crawl totals as null. New crawls record start/completion times, attempted/fetched counts and whether discovery was exhausted. A later complete store parse clears previous failure flags; incomplete parses keep earlier hours and their verification date.
+
+### Directory FAQ reconciliation
+
+The 12 sections in `data/directory-faq.json` route English and Kiswahili questions to the shared official tenant records. They contain question examples and store-selection hints, not competing product descriptions or inventory facts. Answers use current categories, floors and status; coming-soon outlets remain labeled. Visitors can ask “show more” or “nionyeshe zaidi”, choose an outlet, and continue to its published hours or contacts.
+
+FAQ claims are accepted only to the extent supported by the official listing. In particular, Wina Classic is a repair outlet rather than a menswear recommendation. No authorization, exact stock, full menu, ATM access, teller service or watch-repair guarantee is inferred from the proposed FAQ. Products such as wigs, carpets, eyeglasses and vitamins route to related official categories, with availability left for the outlet to confirm.
+
+`python3 scripts/reconcile-directory-faq.py --apply` refreshes only the FAQ-linked outlets with the existing parser, checks robots rules, and retains previous facts for failed or incomplete pages. It updates the shared tenants/documents/chunks and writes `data/directory-faq-review.json` as an audit snapshot. It does not change the full-site refresh timestamp or manual overrides. The daily full refresh remains the normal update path.

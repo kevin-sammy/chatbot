@@ -1,0 +1,144 @@
+{
+  "checkedAt": "2026-10-22T17:32:23.848509+00:00",
+  "scope": "FAQ-linked stores only; not a complete website sync",
+  "attemptedPages": 68,
+  "verifiedPages": 68,
+  "failures": [],
+  "correctionPolicy": "Use refreshed official store categories and status. FAQ product lists are not inventory, authorization or branch-service evidence.",
+  "comingSoon": [
+    {
+      "name": "ANTA",
+      "url": "https://galleria.co.ke/stores/anta/"
+    },
+    {
+      "name": "Barista & Co.",
+      "url": "https://galleria.co.ke/stores/barista-co/"
+    },
+    {
+      "name": "Cilantro Sprouts",
+      "url": "https://galleria.co.ke/stores/cilantro-sprouts/"
+    },
+    {
+      "name": "Cinemax",
+      "url": "https://galleria.co.ke/stores/cinemax/"
+    },
+    {
+      "name": "CJs",
+      "url": "https://galleria.co.ke/stores/cjs/"
+    },
+    {
+      "name": "Garnet Pharmacy",
+      "url": "https://galleria.co.ke/stores/garnet-pharmacy/"
+    },
+    {
+      "name": "i.store",
+      "url": "https://galleria.co.ke/stores/i-store/"
+    },
+    {
+      "name": "KashCo Interiors",
+      "url": "https://galleria.co.ke/stores/kashco-interiors/"
+    },
+    {
+      "name": "KCB Bank",
+      "url": "https://galleria.co.ke/stores/kcb-bank/"
+    },
+    {
+      "name": "Levi’s",
+      "url": "https://galleria.co.ke/stores/levis/"
+    },
+    {
+      "name": "Miniso",
+      "url": "https://galleria.co.ke/stores/miniso/"
+    },
+    {
+      "name": "NCBA Loop",
+      "url": "https://galleria.co.ke/stores/ncba-loop/"
+    },
+    {
+      "name": "Palace Istanbul",
+      "url": "https://galleria.co.ke/stores/palace-istanbul/"
+    },
+    {
+      "name": "Skechers",
+      "url": "https://galleria.co.ke/stores/skechers/"
+    },
+    {
+      "name": "True Cosmetics",
+      "url": "https://galleria.co.ke/stores/true-cosmetics/"
+    },
+    {
+      "name": "Victoria Carpets",
+      "url": "https://galleria.co.ke/stores/victoria-carpets/"
+    }
+  ],
+  "verifiedURLs": [
+    "https://galleria.co.ke/stores/adidas/",
+    "https://galleria.co.ke/stores/anta/",
+    "https://galleria.co.ke/stores/artcaffe/",
+    "https://galleria.co.ke/stores/ashut/",
+    "https://galleria.co.ke/stores/bank-of-africa-boa/",
+    "https://galleria.co.ke/stores/barista-co/",
+    "https://galleria.co.ke/stores/bata/",
+    "https://galleria.co.ke/stores/bikes-sports/",
+    "https://galleria.co.ke/stores/boba-cafeteria/",
+    "https://galleria.co.ke/stores/carrefour/",
+    "https://galleria.co.ke/stores/cilantro-sprouts/",
+    "https://galleria.co.ke/stores/cinemax/",
+    "https://galleria.co.ke/stores/city-walk-galleria/",
+    "https://galleria.co.ke/stores/cjs/",
+    "https://galleria.co.ke/stores/coldstone-creamery/",
+    "https://galleria.co.ke/stores/essenza/",
+    "https://galleria.co.ke/stores/extreme-styling-studio/",
+    "https://galleria.co.ke/stores/fargo-courier/",
+    "https://galleria.co.ke/stores/fun-factory/",
+    "https://galleria.co.ke/stores/g-crafts-market/",
+    "https://galleria.co.ke/stores/g-fun-club/",
+    "https://galleria.co.ke/stores/garnet-pharmacy/",
+    "https://galleria.co.ke/stores/going-outdoor/",
+    "https://galleria.co.ke/stores/healthy-u/",
+    "https://galleria.co.ke/stores/hla/",
+    "https://galleria.co.ke/stores/home-beyond/",
+    "https://galleria.co.ke/stores/hotpoint/",
+    "https://galleria.co.ke/stores/i-store/",
+    "https://galleria.co.ke/stores/indian-khazanah/",
+    "https://galleria.co.ke/stores/jani-beauty/",
+    "https://galleria.co.ke/stores/java-house/",
+    "https://galleria.co.ke/stores/kashco-interiors/",
+    "https://galleria.co.ke/stores/kcb-bank/",
+    "https://galleria.co.ke/stores/kfc/",
+    "https://galleria.co.ke/stores/lady-luck-shape-wear/",
+    "https://galleria.co.ke/stores/lc-waikiki/",
+    "https://galleria.co.ke/stores/levis/",
+    "https://galleria.co.ke/stores/lintons-beauty-world/",
+    "https://galleria.co.ke/stores/manix-clothing-store/",
+    "https://galleria.co.ke/stores/mbuzi-munch/",
+    "https://galleria.co.ke/stores/miniso/",
+    "https://galleria.co.ke/stores/mrp/",
+    "https://galleria.co.ke/stores/muthaiga-abc-forex-bureau/",
+    "https://galleria.co.ke/stores/ncba-loop/",
+    "https://galleria.co.ke/stores/ncba/",
+    "https://galleria.co.ke/stores/oneway-kenya/",
+    "https://galleria.co.ke/stores/optica-galleria/",
+    "https://galleria.co.ke/stores/palace-istanbul/",
+    "https://galleria.co.ke/stores/panda-mart/",
+    "https://galleria.co.ke/stores/pharmart/",
+    "https://galleria.co.ke/stores/pink-skink/",
+    "https://galleria.co.ke/stores/pizza-hut/",
+    "https://galleria.co.ke/stores/planet-yogurt/",
+    "https://galleria.co.ke/stores/rocomamas/",
+    "https://galleria.co.ke/stores/salute-i-world/",
+    "https://galleria.co.ke/stores/samsung/",
+    "https://galleria.co.ke/stores/silken-human-hair/",
+    "https://galleria.co.ke/stores/skechers/",
+    "https://galleria.co.ke/stores/the-health-clove/",
+    "https://galleria.co.ke/stores/the-hive/",
+    "https://galleria.co.ke/stores/timekeepers/",
+    "https://galleria.co.ke/stores/true-cosmetics/",
+    "https://galleria.co.ke/stores/umoja-shoe-company/",
+    "https://galleria.co.ke/stores/universal-smart-planet-systems/",
+    "https://galleria.co.ke/stores/victoria-carpets/",
+    "https://galleria.co.ke/stores/vivo-woman/",
+    "https://galleria.co.ke/stores/wina-classic/",
+    "https://galleria.co.ke/stores/woolworths/"
+  ]
+}

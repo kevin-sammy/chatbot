@@ -232,6 +232,17 @@ def atomic_json(path, value):
         f.write('\n')
     os.replace(f.name,path)
 
+def merge_store(before, parsed, now):
+    # Only this attempt decides whether a record is partial. Old failure flags
+    # must not survive a later successful parse.
+    partial=any(before.get(k) and not parsed.get(k) for k in ['floor','hours'])
+    merged={**before,**{k:v for k,v in parsed.items() if v is not None and v!=''}}
+    merged.pop('refreshStatus',None)
+    if partial:
+        merged['verifiedAt']=before.get('verifiedAt',now)
+        merged['refreshStatus']='partial refresh; earlier details retained'
+    return merged
+
 def run():
     opener=build_opener(SafeRedirect())
     robots=RobotFileParser(BASE+'robots.txt')
@@ -291,12 +302,7 @@ def run():
         if r['pageType']=='store' and not r.get('stale'):
             parsed=r['store'];before=previous.get(r['url'],{})
             # Preserve descriptions/aliases unless a supported extractor replaces them.
-            partial=any(before.get(k) and not parsed.get(k) for k in ['floor','hours'])
-            merged={**before,**{k:v for k,v in parsed.items() if v is not None and v!=''}}
-            if partial:
-                merged['verifiedAt']=before.get('verifiedAt',NOW)
-                merged['refreshStatus']='partial refresh; earlier details retained'
-            previous[r['url']]=merged
+            previous[r['url']]=merge_store(before,parsed,NOW)
     failed={f['url'] for f in failures}
     for url,t in previous.items():
         if url in failed:
@@ -304,7 +310,8 @@ def run():
         elif 'partial refresh' not in t.get('refreshStatus',''):
             t.pop('refreshStatus',None)
     documents=list(records.values())
-    value={'schemaVersion':1,'lastSuccessfulCrawl':NOW,'documents':documents,'events':[r['dated']|{'stale':r.get('stale',False)} for r in documents if r['pageType']=='event'],'deals':[r['dated']|{'stale':r.get('stale',False)} for r in documents if r['pageType']=='deal'],'chunks':[c for r in documents for c in chunks(r)],'failures':failures}
+    completed=dt.datetime.now(dt.timezone.utc).isoformat()
+    value={'schemaVersion':1,'lastSuccessfulCrawl':completed,'crawlStartedAt':NOW,'crawlCompletedAt':completed,'crawlSummary':{'attemptedPages':len(seen),'fetchedPages':len(seen)-len(failures),'discoveryComplete':not bool(pending-seen)},'documents':documents,'events':[r['dated']|{'stale':r.get('stale',False)} for r in documents if r['pageType']=='event'],'deals':[r['dated']|{'stale':r.get('stale',False)} for r in documents if r['pageType']=='deal'],'chunks':[c for r in documents for c in chunks(r)],'failures':failures}
     # Manual overrides live in their own file and are never modified here.
     atomic_json(DATA/'catalog.json',value)
     atomic_json(DATA/'tenants.json',sorted(previous.values(),key=lambda t:t['name'].lower()))

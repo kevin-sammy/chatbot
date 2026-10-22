@@ -2,7 +2,7 @@ import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent/'scripts'))
-from ingest import extract, canonical, iso_date, chunks
+from ingest import extract, canonical, iso_date, chunks, merge_store
 
 class IngestionTests(unittest.TestCase):
     def test_store_floor_formats_and_footer_phone_separation(self):
@@ -11,6 +11,21 @@ class IngestionTests(unittest.TestCase):
             r,_=extract(html,'https://galleria.co.ke/stores/sample/')
             self.assertEqual(r['store']['floor'],'Ground Floor')
             self.assertEqual(r['store']['phone'],'0700123456')
+    def test_recovered_store_clears_old_failure_and_partial_flags(self):
+        for flag in ['live refresh failed; previously captured record', 'partial refresh; earlier details retained']:
+            before={'floor':'First Floor','hours':'9AM-5PM','verifiedAt':'old','refreshStatus':flag}
+            merged=merge_store(before,{'floor':'Ground Floor','hours':'8AM-6PM','verifiedAt':'new'},'now')
+            self.assertNotIn('refreshStatus',merged)
+            self.assertEqual(merged['verifiedAt'],'new')
+            self.assertEqual(merged['floor'],'Ground Floor')
+
+    def test_partial_parse_preserves_prior_hours_and_verification(self):
+        before={'floor':'First Floor','hours':'9AM-5PM','verifiedAt':'old'}
+        merged=merge_store(before,{'floor':'Ground Floor','hours':None,'verifiedAt':'new'},'now')
+        self.assertEqual(merged['hours'],'9AM-5PM')
+        self.assertEqual(merged['verifiedAt'],'old')
+        self.assertIn('partial refresh',merged['refreshStatus'])
+
     def test_official_only(self):
         for url in ['http://galleria.co.ke/','https://evil.example/','https://galleria.co.ke@evil.example/']:
             self.assertIsNone(canonical(url))
