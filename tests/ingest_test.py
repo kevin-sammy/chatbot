@@ -1,10 +1,68 @@
 import sys
 import unittest
+import tempfile
+import time
+from unittest.mock import patch
+from urllib.error import HTTPError, URLError
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent/'scripts'))
-from ingest import extract, canonical, iso_date, chunks, merge_store
+from ingest import extract, canonical, iso_date, chunks, merge_store, crawl_pages, fetch_error, retryable, run
 
 class IngestionTests(unittest.TestCase):
+    def test_late_retry_recovers_transient_failures_and_clears_failure_count(self):
+        url='https://galleria.co.ke/stores/sample/'
+        attempts=[]
+        def fetch(target, count):
+            attempts.append(count)
+            if len(attempts)==1:
+                return target,None,'HTTP 503'
+            return target,'<main><h1>Sample Store</h1><p>Complete verified information about the sample store.</p></main>',None
+        with patch('ingest.time.sleep'):
+            seen,records,failures,pending=crawl_pages({url},fetch,time.monotonic()+60)
+        self.assertEqual(attempts,[2,1])
+        self.assertEqual(seen,{url})
+        self.assertIn(url,records)
+        self.assertEqual(failures,[])
+
+    def test_permanent_failures_are_not_retried(self):
+        url='https://galleria.co.ke/stores/sample/'
+        for error in ['HTTP 404','HTTP 403','disallowed by robots.txt','ValueError']:
+            with self.subTest(error=error):
+                calls=[]
+                def fetch(target, count):
+                    calls.append(target)
+                    return target,None,error
+                _,records,failures,_=crawl_pages({url},fetch,time.monotonic()+60)
+                self.assertEqual(calls,[url])
+                self.assertEqual(records,{})
+                self.assertEqual(failures[0]['error'],error)
+
+    def test_network_diagnostics_preserve_http_status_and_reason_type(self):
+        self.assertEqual(fetch_error(HTTPError('https://galleria.co.ke/',503,'Unavailable',{},None)),'HTTP 503')
+        self.assertEqual(fetch_error(URLError(TimeoutError('timed out'))),'URLError: TimeoutError')
+        self.assertTrue(retryable('URLError: TimeoutError'))
+        self.assertFalse(retryable('HTTP 404'))
+
+    def test_exhausted_crawl_budget_does_not_start_requests(self):
+        def fetch(*args):
+            self.fail('deadline must prevent starting a new batch')
+        seen,records,failures,pending=crawl_pages({'https://galleria.co.ke/'},fetch,time.monotonic()-1)
+        self.assertEqual(seen,set())
+        self.assertEqual(records,{})
+        self.assertTrue(pending)
+
+    def test_incomplete_refresh_leaves_previous_files_unchanged(self):
+        with tempfile.TemporaryDirectory() as folder:
+            data=Path(folder)
+            (data/'catalog.json').write_text('{"documents": []}')
+            (data/'tenants.json').write_text('[]')
+            before={p.name:p.read_bytes() for p in data.iterdir()}
+            with patch('ingest.DATA',data),patch('ingest.build_opener') as opener,patch('ingest.crawl_pages',return_value=(set(range(10)),{},[],set())):
+                opener.return_value.open.side_effect=URLError('offline')
+                with self.assertRaisesRegex(RuntimeError,'previous files have not been replaced'):
+                    run()
+            self.assertEqual(before,{p.name:p.read_bytes() for p in data.iterdir()})
+
     def test_store_floor_formats_and_footer_phone_separation(self):
         for location in ['Location - Ground Floor','Location\nGround Floor']:
             html='<main><h1>Sample Shop</h1><p>'+location+'</p><a href="tel:0700123456">0700 123456</a><div>Keep In Touch</div><a href="tel:0202363063">020 2363063</a></main>'

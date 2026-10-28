@@ -16,6 +16,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 from urllib.request import Request, build_opener, HTTPRedirectHandler
+from urllib.error import HTTPError, URLError
 from urllib.robotparser import RobotFileParser
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -243,7 +244,56 @@ def merge_store(before, parsed, now):
         merged['refreshStatus']='partial refresh; earlier details retained'
     return merged
 
+def fetch_error(error):
+    if isinstance(error, HTTPError):
+        return 'HTTP '+str(error.code)
+    if isinstance(error, URLError):
+        return 'URLError: '+type(error.reason).__name__
+    return type(error).__name__
+
+def retryable(error):
+    return error.startswith(('HTTP 429', 'HTTP 5', 'URLError:', 'TimeoutError', 'ConnectionError', 'OSError'))
+
+def crawl_pages(pending, fetch, deadline):
+    pending=set(pending)
+    seen=set();records={};failures={}
+    def collect(batch, attempts):
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+            tasks={pool.submit(fetch,url,attempts):url for url in batch}
+            for task in concurrent.futures.as_completed(tasks):
+                url,html,error=task.result()
+                if error:
+                    failures[url]={'url':url,'error':error,'attemptedAt':NOW}
+                else:
+                    record,links=extract(html,url)
+                    if len(record['text'])<40:
+                        failures[url]={'url':url,'error':'empty page','attemptedAt':NOW}
+                    else:
+                        records[url]=record
+                        failures.pop(url,None)
+                        pending.update(links)
+                if (len(records)+len(failures))%10==0:
+                    print('Pages checked:',len(seen),'successful:',len(records),'failed:',len(failures),flush=True)
+    for _ in range(3):
+        batch=sorted(pending-seen)[:300-len(seen)]
+        if not batch or time.monotonic()>=deadline:
+            break
+        seen.update(batch)
+        collect(batch,2)
+    # An early outage may have cleared by the end of discovery. Retry failed
+    # requests then, instead of permanently counting the early failures.
+    recover=[url for url,failure in failures.items() if retryable(failure['error'])]
+    if recover and time.monotonic()+15<deadline:
+        time.sleep(5)
+        print('Retrying transient page failures:',len(recover),flush=True)
+        collect(recover,1)
+    print('Refresh summary:',len(seen),'attempted,',len(records),'successful,',len(failures),'failed',flush=True)
+    for failure in list(failures.values())[:5]:
+        print('Page failure:',failure['url'],failure['error'],flush=True)
+    return seen,records,list(failures.values()),pending
+
 def run():
+    deadline=time.monotonic()+18*60
     opener=build_opener(SafeRedirect())
     robots=RobotFileParser(BASE+'robots.txt')
     try:
@@ -251,12 +301,16 @@ def run():
             robots.parse(r.read(200000).decode('utf-8','replace').splitlines())
     except Exception:
         robots=None
-    def fetch(url):
+    def fetch(url, attempts=2):
         if robots and not robots.can_fetch(AGENT,url):
             return url,None,'disallowed by robots.txt'
-        for attempt in range(2):
+        for attempt in range(attempts):
+            if time.monotonic()>=deadline:
+                return url,None,'crawl deadline reached'
             try:
-                with opener.open(Request(url,headers={'User-Agent':AGENT}),timeout=20) as r:
+                # Each worker owns its request handlers. Shorter bounded attempts
+                # leave time for a later recovery pass inside the Actions job.
+                with build_opener(SafeRedirect()).open(Request(url,headers={'User-Agent':AGENT}),timeout=10) as r:
                     if not canonical(r.url) or 'text/html' not in r.headers.get('Content-Type',''):
                         raise ValueError('Invalid page source or content type')
                     raw=r.read(2000001)
@@ -264,31 +318,15 @@ def run():
                         raise ValueError('Page exceeds size limit')
                     return url,raw.decode('utf-8','replace'),None
             except Exception as e:
-                if attempt:
-                    return url,None,type(e).__name__
-                time.sleep(.5)
+                error=fetch_error(e)
+                if attempt==attempts-1 or not retryable(error):
+                    return url,None,error
+                time.sleep(1)
     old=load_json(DATA/'catalog.json',{'documents':[]})
     tenants=load_json(DATA/'tenants.json',[])
     seeds=['','site-map/','stores/','events/','deals/','mall-hours/','parking/','directions/','gift-vouchers/','contact-us/','kids/','attractions/','news/','advertising/','leasing/','courtesy-policy/','store_status/opening-soon/']
     pending={BASE+p for p in seeds}|{t['url'] for t in tenants if canonical(t['url'])}
-    seen=set();records={};failures=[]
-    for _ in range(3):
-        batch=sorted(pending-seen)[:300-len(seen)]
-        if not batch:
-            break
-        seen.update(batch)
-        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
-            for url,html,error in pool.map(fetch,batch):
-                if error:
-                    failures.append({'url':url,'error':error,'attemptedAt':NOW})
-                    continue
-                record,links=extract(html,url)
-                if len(record['text'])<40:
-                    failures.append({'url':url,'error':'empty page','attemptedAt':NOW})
-                    continue
-                records[url]=record
-                pending.update(links)
-        print('Pages checked:',len(seen),'successful:',len(records),'failed:',len(failures),flush=True)
+    seen,records,failures,pending=crawl_pages(pending,fetch,deadline)
     if len(records)<max(5,len(seen)//2):
         raise RuntimeError('Refresh incomplete; previous files have not been replaced')
     parsed_stores=[r['store'] for r in records.values() if r['pageType']=='store']
