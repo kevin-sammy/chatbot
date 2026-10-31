@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 import re
+import sys
 import tempfile
 import time
 from html.parser import HTMLParser
@@ -254,6 +255,26 @@ def fetch_error(error):
 def retryable(error):
     return error.startswith(('HTTP 429', 'HTTP 5', 'URLError:', 'TimeoutError', 'ConnectionError', 'OSError'))
 
+class RefreshDeferred(RuntimeError):
+    """The source is unavailable; keep the existing snapshot and its timestamp."""
+    def __init__(self, attempted, fetched, failed):
+        self.attempted,self.fetched,self.failed=attempted,fetched,failed
+        super().__init__(f'Official website unavailable: {fetched}/{attempted} pages fetched; refresh deferred. Previous files and verification dates have not been replaced.')
+
+def require_coverage(seen, records, failures, old, tenants):
+    required=max(5,len(seen)//2)
+    if len(records)>=required:
+        return
+    errors=[failure['error'] for failure in failures]
+    transient=sum(retryable(error) or error=='crawl deadline reached' for error in errors)
+    source_errors=all(retryable(error) or error in ['crawl deadline reached','HTTP 403','HTTP 404','disallowed by robots.txt'] for error in errors)
+    # Only source-availability failures with a usable prior snapshot qualify.
+    # Empty/malformed pages, extraction bugs and bootstrap failures remain errors.
+    cached=len(old.get('documents',[]))>=5 and len(tenants)>=5
+    if cached and source_errors and transient and len(records)+transient>=required:
+        raise RefreshDeferred(len(seen),len(records),len(failures))
+    raise RuntimeError('Refresh incomplete; previous files have not been replaced')
+
 def crawl_pages(pending, fetch, deadline):
     pending=set(pending)
     seen=set();records={};failures={}
@@ -327,8 +348,7 @@ def run():
     seeds=['','site-map/','stores/','events/','deals/','mall-hours/','parking/','directions/','gift-vouchers/','contact-us/','kids/','attractions/','news/','advertising/','leasing/','courtesy-policy/','store_status/opening-soon/']
     pending={BASE+p for p in seeds}|{t['url'] for t in tenants if canonical(t['url'])}
     seen,records,failures,pending=crawl_pages(pending,fetch,deadline)
-    if len(records)<max(5,len(seen)//2):
-        raise RuntimeError('Refresh incomplete; previous files have not been replaced')
+    require_coverage(seen,records,failures,old,tenants)
     parsed_stores=[r['store'] for r in records.values() if r['pageType']=='store']
     if parsed_stores and sum(bool(t.get('floor')) for t in parsed_stores)<len(parsed_stores)*.8:
         raise RuntimeError('Store floor extraction incomplete; previous files have not been replaced')
@@ -355,5 +375,19 @@ def run():
     atomic_json(DATA/'tenants.json',sorted(previous.values(),key=lambda t:t['name'].lower()))
     print('Published',len(value['events']),'event records and',len(value['deals']),'deal records. Unknown dates stay unknown.',flush=True)
 
+def main():
+    try:
+        run()
+    except RefreshDeferred as error:
+        print(str(error),file=sys.stderr,flush=True)
+        if os.environ.get('GITHUB_ACTIONS')=='true':
+            print('::warning title=Knowledge refresh deferred::The official website could not be refreshed. Serving the previous snapshot; no verification dates were advanced.',flush=True)
+            summary=os.environ.get('GITHUB_STEP_SUMMARY')
+            if summary:
+                with open(summary,'a',encoding='utf-8') as report:
+                    report.write(f'### Knowledge refresh deferred\n\nThe official website was unavailable: **{error.fetched}/{error.attempted}** pages fetched; **{error.failed}** failed.\n\nNo knowledge files were replaced, no verification dates were advanced, and publication is skipped. Existing freshness indicators remain based on the last successful snapshot. The next scheduled run will retry.\n')
+        return 75
+    return 0
+
 if __name__=='__main__':
-    run()
+    sys.exit(main())

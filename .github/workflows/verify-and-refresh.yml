@@ -42,12 +42,24 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
-      - run: python3 scripts/ingest.py
+      - name: Refresh official website knowledge
+        id: crawl
+        run: |
+          set +e
+          python3 -u scripts/ingest.py
+          refresh_status=$?
+          set -e
+          case "$refresh_status" in
+            0) echo 'refreshed=true' >> "$GITHUB_OUTPUT" ;;
+            75) echo 'refreshed=false' >> "$GITHUB_OUTPUT" ;;
+            *) exit "$refresh_status" ;;
+          esac
       - run: node scripts/check-knowledge.mjs
       - run: node --test tests/*.test.mjs
       - run: node scripts/evaluate.mjs
       - run: npm run build
       - name: Publish validated data for the Vercel Git integration
+        if: steps.crawl.outputs.refreshed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
