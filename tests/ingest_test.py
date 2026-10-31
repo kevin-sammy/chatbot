@@ -2,13 +2,69 @@ import sys
 import unittest
 import tempfile
 import time
+import os
+import subprocess
+import textwrap
 from unittest.mock import patch
 from urllib.error import HTTPError, URLError
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent/'scripts'))
-from ingest import extract, canonical, iso_date, chunks, merge_store, crawl_pages, fetch_error, retryable, run
+from ingest import extract, canonical, iso_date, chunks, merge_store, crawl_pages, fetch_error, retryable, run, require_coverage, RefreshDeferred, main
 
 class IngestionTests(unittest.TestCase):
+    def test_reported_34_of_132_timeout_outage_is_deferred_with_cache(self):
+        failures=[{'error':'TimeoutError'} for _ in range(98)]
+        with self.assertRaises(RefreshDeferred) as caught:
+            require_coverage(set(range(132)),dict.fromkeys(range(34)),failures,{'documents':[{}]*5},[{}]*5)
+        self.assertEqual(caught.exception.fetched,34)
+        self.assertEqual(caught.exception.failed,98)
+
+    def test_parser_failure_and_missing_cache_are_not_deferred(self):
+        for failures,old in [([{'error':'TimeoutError'}]*97+[{'error':'empty page'}],{'documents':[{}]*5}),([{'error':'TimeoutError'}]*98,{'documents':[]})]:
+            with self.assertRaises(RuntimeError) as caught:
+                require_coverage(set(range(132)),dict.fromkeys(range(34)),failures,old,[{}]*5)
+            self.assertNotIsInstance(caught.exception,RefreshDeferred)
+
+    def test_deferred_refresh_preserves_both_files_and_their_verification_dates(self):
+        import json
+        with tempfile.TemporaryDirectory() as folder:
+            data=Path(folder)
+            (data/'catalog.json').write_text(json.dumps({'lastSuccessfulCrawl':'2026-10-28T08:00:00Z','documents':[{}]*5}))
+            (data/'tenants.json').write_text(json.dumps([{'url':'https://galleria.co.ke/stores/sample/','verifiedAt':'2026-10-28T08:00:00Z'}]*5))
+            before={p.name:p.read_bytes() for p in data.iterdir()}
+            result=(set(range(132)),dict.fromkeys(range(34)),[{'error':'TimeoutError'}]*98,set())
+            with patch('ingest.DATA',data),patch('ingest.build_opener') as opener,patch('ingest.crawl_pages',return_value=result),patch.dict(os.environ,{'GITHUB_ACTIONS':'false'}):
+                opener.return_value.open.side_effect=URLError('offline')
+                self.assertEqual(main(),75)
+            self.assertEqual(before,{p.name:p.read_bytes() for p in data.iterdir()})
+
+    def test_deferred_exit_code_writes_an_explicit_warning_and_summary(self):
+        with tempfile.TemporaryDirectory() as folder:
+            summary=Path(folder)/'summary.md'
+            with patch('ingest.run',side_effect=RefreshDeferred(132,34,98)),patch.dict(os.environ,{'GITHUB_ACTIONS':'true','GITHUB_STEP_SUMMARY':str(summary)}),patch('builtins.print') as printed:
+                self.assertEqual(main(),75)
+            self.assertIn('no verification dates were advanced',summary.read_text())
+            self.assertTrue(any('::warning' in str(call) for call in printed.call_args_list))
+        with patch('ingest.run',side_effect=RuntimeError('bad parser')):
+            with self.assertRaisesRegex(RuntimeError,'bad parser'):
+                main()
+
+    def test_actual_workflow_shell_distinguishes_success_deferred_and_error(self):
+        workflow=(Path(__file__).resolve().parent.parent/'.github/workflows/verify-and-refresh.yml').read_text()
+        block=workflow.split('id: crawl\n        run: |\n',1)[1].split('      - run:',1)[0]
+        script=textwrap.dedent(block)
+        with tempfile.TemporaryDirectory() as folder:
+            output=Path(folder)/'output'
+            executable=Path(folder)/'python3'
+            for status,expected in [(0,'refreshed=true'),(75,'refreshed=false'),(1,'')]:
+                executable.write_text('#!/bin/sh\nexit '+str(status)+'\n')
+                executable.chmod(0o755)
+                output.write_text('')
+                result=subprocess.run(['bash','-e','-c',script],env={**os.environ,'PATH':folder+os.pathsep+os.environ['PATH'],'GITHUB_OUTPUT':str(output)},capture_output=True)
+                self.assertEqual(result.returncode,1 if status==1 else 0)
+                self.assertEqual(output.read_text().strip(),expected)
+        self.assertIn("if: steps.crawl.outputs.refreshed == 'true'",workflow)
+
     def test_late_retry_recovers_transient_failures_and_clears_failure_count(self):
         url='https://galleria.co.ke/stores/sample/'
         attempts=[]
